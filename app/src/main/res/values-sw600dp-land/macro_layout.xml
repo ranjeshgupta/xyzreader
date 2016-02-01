@@ -1,6 +1,8 @@
 <resources>
-    <!-- detail -->
-    <bool name="detail_is_card">true</bool>
-
+    <!-- list -->
     <integer name="list_column_count">3</integer>
+
+    <!-- detail -->
+    <dimen name="detail_photo_height">704dp</dimen>
+    <dimen name="detail_card_top_margin">@dimen/detail_photo_height</dimen>
 </resources>

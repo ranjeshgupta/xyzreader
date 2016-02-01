@@ -11,4 +11,8 @@
 
     <string name="default_font">sans-serif-condensed</string>
 
+    <string name="regular_font">Oswald-Regular.ttf</string>
+    <string name="light_font">Oswald-Light.ttf</string>
+    <string name="bold_font">Oswald-Bold.ttf</string>
+
 </resources>

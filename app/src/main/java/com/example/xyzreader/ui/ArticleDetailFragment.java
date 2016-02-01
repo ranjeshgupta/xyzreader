@@ -8,6 +8,7 @@ import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.graphics.Rect;
+import android.graphics.Typeface;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.support.v4.app.ShareCompat;
@@ -19,7 +20,6 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.android.volley.VolleyError;
@@ -35,6 +35,7 @@ import com.example.xyzreader.data.ArticleLoader;
 public class ArticleDetailFragment extends Fragment implements
         LoaderManager.LoaderCallbacks<Cursor> {
     private static final String TAG = "ArticleDetailFragment";
+    private final String mShareTag = "#xyzreader";
 
     public static final String ARG_ITEM_ID = "item_id";
     private static final float PARALLAX_FACTOR = 1.25f;
@@ -117,18 +118,6 @@ public class ArticleDetailFragment extends Fragment implements
 
         mStatusBarColorDrawable = new ColorDrawable(0);
 
-        /*
-        mRootView.findViewById(R.id.share_fab).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                startActivity(Intent.createChooser(ShareCompat.IntentBuilder.from(getActivity())
-                        .setType("text/plain")
-                        .setText("Some sample text")
-                        .getIntent(), getString(R.string.action_share)));
-            }
-        });
-        */
-
         bindViews();
         updateStatusBar();
         return mRootView;
@@ -172,7 +161,10 @@ public class ArticleDetailFragment extends Fragment implements
         TextView bylineView = (TextView) mRootView.findViewById(R.id.article_byline);
         bylineView.setMovementMethod(new LinkMovementMethod());
         TextView bodyView = (TextView) mRootView.findViewById(R.id.article_body);
-        //bodyView.setTypeface(Typeface.createFromAsset(getResources().getAssets(), "Rosario-Regular.ttf"));
+
+        titleView.setTypeface(Typeface.createFromAsset(getResources().getAssets(), getResources().getString(R.string.bold_font)));
+        bylineView.setTypeface(Typeface.createFromAsset(getResources().getAssets(), getResources().getString(R.string.regular_font)));
+        bodyView.setTypeface(Typeface.createFromAsset(getResources().getAssets(), getResources().getString(R.string.light_font)));
 
         if (mCursor != null) {
             mRootView.setAlpha(0);
@@ -184,7 +176,9 @@ public class ArticleDetailFragment extends Fragment implements
                 public void onClick(View view) {
                     startActivity(Intent.createChooser(ShareCompat.IntentBuilder.from(getActivity())
                             .setType("text/plain")
-                            .setText(mCursor.getString(ArticleLoader.Query.TITLE)+ " \nby " + mCursor.getString(ArticleLoader.Query.AUTHOR))
+                            .setText(mCursor.getString(ArticleLoader.Query.TITLE)+ " \nby "
+                                    + mCursor.getString(ArticleLoader.Query.AUTHOR)
+                                    + "\n" + mShareTag)
                             .getIntent(), getString(R.string.action_share)));
                 }
             });

@@ -9,15 +9,20 @@ import android.content.Loader;
 import android.database.Cursor;
 import android.graphics.Typeface;
 import android.os.Bundle;
+import android.support.design.widget.CoordinatorLayout;
+import android.support.design.widget.Snackbar;
+import android.support.v4.content.LocalBroadcastManager;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.StaggeredGridLayoutManager;
 import android.support.v7.widget.Toolbar;
 import android.text.format.DateUtils;
+import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.xyzreader.R;
 import com.example.xyzreader.data.ArticleLoader;
@@ -33,9 +38,15 @@ import com.example.xyzreader.data.UpdaterService;
 public class ArticleListActivity extends AppCompatActivity implements
         LoaderManager.LoaderCallbacks<Cursor> {
 
+    public static final String BROADCAST_ACTION_STATE_CHANGE = "STATE_CHANGE";
+    public static final String EXTRA_REFRESHING = "REFRESHING";
+    public static final String MESSAGE_KEY = "MESSAGE_EXTRA";
+
     private Toolbar mToolbar;
     private SwipeRefreshLayout mSwipeRefreshLayout;
     private RecyclerView mRecyclerView;
+    private BroadcastReceiver mRefreshingReceiver;
+    private CoordinatorLayout mCoordinatorLayout;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -49,6 +60,12 @@ public class ArticleListActivity extends AppCompatActivity implements
         mRecyclerView = (RecyclerView) findViewById(R.id.recycler_view);
         getLoaderManager().initLoader(0, null, this);
 
+        mCoordinatorLayout = (CoordinatorLayout) findViewById(R.id.col);
+
+        mRefreshingReceiver = new MessageReciever();
+        IntentFilter filter = new IntentFilter(BROADCAST_ACTION_STATE_CHANGE);
+        LocalBroadcastManager.getInstance(this).registerReceiver(mRefreshingReceiver, filter);
+
         if (savedInstanceState == null) {
             refresh();
         }
@@ -59,29 +76,28 @@ public class ArticleListActivity extends AppCompatActivity implements
     }
 
     @Override
-    protected void onStart() {
-        super.onStart();
-        registerReceiver(mRefreshingReceiver,
-                new IntentFilter(UpdaterService.BROADCAST_ACTION_STATE_CHANGE));
-    }
-
-    @Override
-    protected void onStop() {
-        super.onStop();
-        unregisterReceiver(mRefreshingReceiver);
+    protected void onDestroy() {
+        LocalBroadcastManager.getInstance(this).unregisterReceiver(mRefreshingReceiver);
+        super.onDestroy();
     }
 
     private boolean mIsRefreshing = false;
 
-    private BroadcastReceiver mRefreshingReceiver = new BroadcastReceiver() {
+    private class MessageReciever extends BroadcastReceiver {
         @Override
         public void onReceive(Context context, Intent intent) {
-            if (UpdaterService.BROADCAST_ACTION_STATE_CHANGE.equals(intent.getAction())) {
-                mIsRefreshing = intent.getBooleanExtra(UpdaterService.EXTRA_REFRESHING, false);
+            if (BROADCAST_ACTION_STATE_CHANGE.equals(intent.getAction())) {
+                if(intent.getStringExtra(MESSAGE_KEY)!=null){
+                    Snackbar.make(mCoordinatorLayout, intent.getStringExtra(MESSAGE_KEY), Snackbar.LENGTH_LONG).show();
+                    mIsRefreshing = false;
+                }
+                else {
+                    mIsRefreshing = intent.getBooleanExtra(EXTRA_REFRESHING, false);
+                }
                 updateRefreshingUI();
             }
         }
-    };
+    }
 
     private void updateRefreshingUI() {
         mSwipeRefreshLayout.setRefreshing(mIsRefreshing);

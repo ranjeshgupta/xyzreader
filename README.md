@@ -1,5 +1,5 @@
-#### xyzreader
-#Udacity Material Design Project
+# xyzreader
+###Udacity Material Design Project
 
 This application show a list of articles fetched from https://dl.dropboxusercontent.com/u/231329/xyzreader_data. All titles, cover images, and information come from this site.
 

@@ -5,18 +5,16 @@ import android.content.ContentProviderOperation;
 import android.content.ContentValues;
 import android.content.Intent;
 import android.content.OperationApplicationException;
-import android.net.ConnectivityManager;
-import android.net.NetworkInfo;
 import android.net.Uri;
 import android.os.RemoteException;
 import android.support.v4.content.LocalBroadcastManager;
 import android.text.format.Time;
 import android.util.Log;
 
+import com.example.xyzreader.R;
 import com.example.xyzreader.remote.RemoteEndpointUtil;
 import com.example.xyzreader.ui.ArticleListActivity;
 import com.example.xyzreader.util.Utilies;
-import com.squareup.okhttp.internal.Util;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -36,8 +34,8 @@ public class UpdaterService extends IntentService {
         Time time = new Time();
 
         if (!Utilies.isNetworkAvailable(this)) {
-            sendIntentMessage("Not online, not refreshing.");
-            Log.w(TAG, "Not online, not refreshing.");
+            sendIntentMessage(getResources().getString(R.string.no_network));
+            Log.w(TAG, getResources().getString(R.string.no_network));
             return;
         }
 
@@ -54,7 +52,8 @@ public class UpdaterService extends IntentService {
         try {
             JSONArray array = RemoteEndpointUtil.fetchJsonArray();
             if (array == null) {
-                throw new JSONException("Invalid parsed item array" );
+                sendIntentMessage(getResources().getString(R.string.server_down));
+                Log.e(TAG, getResources().getString(R.string.server_down));
             }
 
             for (int i = 0; i < array.length(); i++) {
@@ -75,7 +74,8 @@ public class UpdaterService extends IntentService {
             getContentResolver().applyBatch(ItemsContract.CONTENT_AUTHORITY, cpo);
 
         } catch (JSONException | RemoteException | OperationApplicationException e) {
-            Log.e(TAG, "Error updating content.", e);
+            Log.e(TAG, getResources().getString(R.string.server_error));
+            sendIntentMessage(getResources().getString(R.string.server_error));
         }
 
         sendIntentActionState(false);

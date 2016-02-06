@@ -176,7 +176,7 @@ public class ArticleDetailFragment extends Fragment implements
                 public void onClick(View view) {
                     startActivity(Intent.createChooser(ShareCompat.IntentBuilder.from(getActivity())
                             .setType("text/plain")
-                            .setText(mCursor.getString(ArticleLoader.Query.TITLE)+ " \nby "
+                            .setText(mCursor.getString(ArticleLoader.Query.TITLE) + " \nby "
                                     + mCursor.getString(ArticleLoader.Query.AUTHOR)
                                     + "\n" + mShareTag)
                             .getIntent(), getString(R.string.action_share)));
@@ -199,6 +199,7 @@ public class ArticleDetailFragment extends Fragment implements
             mPhotoView.setImageUrl(
                     mCursor.getString(ArticleLoader.Query.PHOTO_URL),
                     ImageLoaderHelper.getInstance(getActivity()).getImageLoader());
+            mPhotoView.setContentDescription(mCursor.getString(ArticleLoader.Query.TITLE));
 
             ImageLoaderHelper.getInstance(getActivity()).getImageLoader()
                     .get(mCursor.getString(ArticleLoader.Query.PHOTO_URL), new ImageLoader.ImageListener() {
@@ -208,6 +209,7 @@ public class ArticleDetailFragment extends Fragment implements
                             if (bitmap != null) {
                                 Palette p = Palette.generate(bitmap, 12);
                                 mMutedColor = p.getDarkMutedColor(0xFF333333);
+                                mPhotoView.setImageBitmap(imageContainer.getBitmap());
                                 mRootView.findViewById(R.id.meta_bar)
                                         .setBackgroundColor(mMutedColor);
                                 mPhotoView.setBackgroundColor(mMutedColor);

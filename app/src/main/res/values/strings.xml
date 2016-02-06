@@ -15,4 +15,18 @@
     <string name="light_font">Oswald-Light.ttf</string>
     <string name="bold_font">Oswald-Bold.ttf</string>
 
+    <string name="no_network">The network is not available to fetch data.</string>
+    <string name="server_down">The server is not returning data.</string>
+    <string name="server_error">The server is not returning valid data. Please check for an updated version of XYZ Reader.</string>
+
+    <string name="about">About</string>
+    <string name="about_text">This application show a list of articles fetched from https://dl.dropboxusercontent.com/u/231329/xyzreader_data.
+        All titles, cover images, and information come from this site.
+        This project has been modified to implement material design as per the project requirement of Project 5 "Make Your App Material"
+        under Udacity Android Nanodegree program.
+        Main focus was on usage of CoordinatorLayout, AppBarLayout, CollapsingToolbarLayout to manipulate toolbar, scrolling, etc.
+        Enter/Exit transitions were also implemented.
+        Adjusting the app layout for multiple screens was also implemented.
+    </string>
+
 </resources>

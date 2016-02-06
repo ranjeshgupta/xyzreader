@@ -53,7 +53,9 @@
                             android:layout_gravity="bottom"
                             android:orientation="vertical"
                             android:paddingLeft="@dimen/detail_inner_horiz_margin"
+                            android:paddingStart="@dimen/detail_inner_horiz_margin"
                             android:paddingRight="@dimen/detail_inner_horiz_margin"
+                            android:paddingEnd="@dimen/detail_inner_horiz_margin"
                             android:paddingTop="@dimen/detail_metabar_vert_padding"
                             android:paddingBottom="@dimen/detail_metabar_vert_padding"
                             android:layout_marginBottom="@dimen/detail_metabar_vert_padding">

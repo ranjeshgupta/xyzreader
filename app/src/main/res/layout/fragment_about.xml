@@ -1,0 +1,24 @@
+<ScrollView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_below="@id/toolbar"
+    android:paddingLeft="@dimen/detail_metabar_title_bottom_padding"
+    android:paddingStart="@dimen/detail_metabar_title_bottom_padding"
+    android:paddingRight="@dimen/detail_metabar_title_bottom_padding"
+    android:paddingEnd="@dimen/detail_metabar_title_bottom_padding"
+    android:paddingTop="@dimen/detail_metabar_title_bottom_padding"
+    android:paddingBottom="@dimen/detail_metabar_title_bottom_padding"
+    tools:context=".ui.AboutActivity$PlaceholderFragment">
+
+    <TextView
+        android:text="@string/about_text"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="start|left"
+        style="@style/article_body"
+        android:contentDescription="@string/about_text"
+        />
+
+</ScrollView>

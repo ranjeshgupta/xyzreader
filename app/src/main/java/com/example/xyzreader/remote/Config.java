@@ -1,6 +1,6 @@
 package com.example.xyzreader.remote;
 
-import java.net.MalformedURLException;
+import java.io.IOException;
 import java.net.URL;
 
 public class Config {
@@ -10,8 +10,8 @@ public class Config {
         URL url = null;
         try {
             url = new URL("https://dl.dropboxusercontent.com/u/231329/xyzreader_data/data.json" );
-        } catch (MalformedURLException ignored) {
-            // TODO: throw a real error
+        } catch (IOException e) {
+            throw new RuntimeException("Invalid url: " + e);
         }
 
         BASE_URL = url;
